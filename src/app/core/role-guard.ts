@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { CanMatch, Route, Router, UrlTree } from '@angular/router';
 import { Auth } from './auth';
 import { from, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -7,30 +7,30 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleGuard implements CanActivate {
+export class RoleGuard implements CanMatch {
 
   constructor(
     private auth: Auth,
     private router: Router
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
-  const allowedRoles: string[] = route.data['roles'];
+  canMatch(route: Route): Observable<boolean | UrlTree> {
+    const allowedRoles = route.data?.['roles'] as string[];
 
-  // Convertimos la promesa de getUser en un flujo que el Guard entienda
-  return from(this.auth.getUser()).pipe(
-    map(user => {
-      if (!user) {
-        return this.router.createUrlTree(['/login']);
-      }
+    return from(this.auth.getUser()).pipe(
+      map(user => {
+        if (!user) {
+          return this.router.createUrlTree(['/login']);
+        }
 
-      if (!allowedRoles.includes(user.role)) {
-        const redirectPath = user.role === 'admin' ? '/admin' : '/home';
-        return this.router.createUrlTree([redirectPath]);
-      }
+        if (!allowedRoles?.includes(user.role)) {
+          return this.router.createUrlTree(
+            user.role === 'admin' ? ['/admin'] : ['/home']
+          );
+        }
 
-      return true;
-    })
-  );
+        return true;
+      })
+    );
 }
 }

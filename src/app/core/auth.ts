@@ -77,7 +77,6 @@ export class Auth {
   const token = await this.getToken();
   if (token) {
     try {
-      console.log("cargas loaduser");
       const user = await this.loadUserFromApi();
       return user;
     } catch (e) {

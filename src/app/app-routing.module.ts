@@ -17,23 +17,14 @@ const routes: Routes = [
 //----------------------------------User---------------------------------------
   {
   path: 'home',
-  canActivate: [AuthGuard,RoleGuard],
+  canMatch: [AuthGuard,RoleGuard],
   data: { roles: ['user'] },
   loadChildren: () =>
     import('./user/home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'profile',
-    canActivate: [AuthGuard,RoleGuard],
-    data: { roles: ['user','admin'] },
-    resolve: {
-    user: UserResolver
-    },
-    loadChildren: () => import('./user/profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
     path: 'detail',
-    canActivate: [AuthGuard,RoleGuard],
+    canMatch: [AuthGuard,RoleGuard],
     data: { roles: ['user'] },
     loadChildren: () => import('./user/detail/detail.module').then( m => m.DetailPageModule)
   },
@@ -43,10 +34,27 @@ const routes: Routes = [
   //------------------------ Admin------------------------------
   {
   path: 'admin',
-  canActivate: [AuthGuard,RoleGuard],
+  canMatch: [AuthGuard,RoleGuard],
   data: { roles: ['admin'] },
   loadChildren: () =>
     import('./admin/home/home.module').then(m => m.HomePageModule)
+  },
+
+
+
+
+
+
+
+  //---------------------Compartidas------------------------------------------
+  {
+    path: 'profile',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['user','admin'] },
+    resolve: {
+    user: UserResolver
+    },
+    loadChildren: () => import('./user/profile/profile.module').then( m => m.ProfilePageModule)
   },
 
 ];

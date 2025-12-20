@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Auth } from 'src/app/core/auth';
 
 @Component({
   selector: 'app-home',
@@ -6,11 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
   standalone:false,
 })
-export class HomePage implements OnInit {
+export class HomePage  {
 
-  constructor() { }
+  constructor(
+    private auth: Auth,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
+  logout() {
+    this.auth.logoutApi().subscribe({
+      next: async () => {
+        await this.auth.logout();
+        this.router.navigateByUrl('/login', { replaceUrl: true });
+      },
+      error: async () => {
+        await this.auth.logout();
+        this.router.navigateByUrl('/login', { replaceUrl: true });
+      }
+    });
   }
 
 }
