@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, from, Observable } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
-
+import { filter, switchMap, take } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,13 +14,16 @@ export class Auth {
   private TOKEN_KEY = 'token';
 
   private _ready = new BehaviorSubject<boolean>(false);
-
+  private _user = new BehaviorSubject<any | null>(null);
+  user$ = this._user.asObservable();
   constructor(
     private http: HttpClient,
     private storage: Storage
   ) {
     this.init();
   }
+
+
 
   private async init() {
     await this.storage.create();
@@ -40,9 +43,9 @@ export class Auth {
   }
 
   async getToken(): Promise<string | null> {
-    await this.storageReady$().toPromise();
-    return this.storage.get(this.TOKEN_KEY);
-  }
+  await firstValueFrom(this.storageReady$().pipe(take(1)));
+  return this.storage.get(this.TOKEN_KEY);
+}
 
   async saveToken(token: string) {
     await this.storage.set(this.TOKEN_KEY, token);
@@ -63,5 +66,43 @@ export class Auth {
 
   yo() {
     return this.http.get(`${this.API}/yo`);
+  }
+
+ async getUser(): Promise<any | null> {
+  if (this._user.value) {
+    return this._user.value;
+  }
+
+
+  const token = await this.getToken();
+  if (token) {
+    try {
+      console.log("cargas loaduser");
+      const user = await this.loadUserFromApi();
+      return user;
+    } catch (e) {
+      console.error("Error cargando usuario", e);
+      return null;
+    }
+  }
+  return null;
+}
+
+  loadUserFromApi(): Promise<any | null> {
+  return this.yo().toPromise().then(user => {
+    this._user.next(user);
+    return user;
+  }).catch(() => {
+    this._user.next(null);
+    return null;
+  });
+}
+
+  setUser(user: any) {
+   this._user.next(user);
+  }
+
+  clearUser() {
+    this._user.next(null);
   }
 }

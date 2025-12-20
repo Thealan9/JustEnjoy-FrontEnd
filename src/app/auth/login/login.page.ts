@@ -44,8 +44,13 @@ export class LoginPage {
           return;
         }
 
+        this.auth.setUser(res.user);
         await this.auth.saveToken(token);
-        this.router.navigateByUrl('/home', { replaceUrl: true });
+        if (res.user.role === 'admin') {
+        this.router.navigateByUrl('admin', { replaceUrl: true });
+        } else {
+           this.router.navigateByUrl('home', { replaceUrl: true });
+        }
       },
       error: err => {
         console.error('Error login', err);

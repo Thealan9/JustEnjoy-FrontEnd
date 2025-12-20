@@ -29,6 +29,9 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
+    this.auth.yo().subscribe(user => {
+    this.auth.setUser(user);
+  });
 
   }
 
