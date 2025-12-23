@@ -19,8 +19,7 @@ const routes: Routes = [
   path: 'home',
   canMatch: [AuthGuard,RoleGuard],
   data: { roles: ['user'] },
-  loadChildren: () =>
-    import('./user/home/home.module').then(m => m.HomePageModule)
+  loadChildren: () => import('./user/home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'detail',
@@ -36,10 +35,26 @@ const routes: Routes = [
   path: 'admin',
   canMatch: [AuthGuard,RoleGuard],
   data: { roles: ['admin'] },
-  loadChildren: () =>
-    import('./admin/home/home.module').then(m => m.HomePageModule)
+  loadChildren: () => import('./admin/home/home.module').then(m => m.HomePageModule)
   },
-
+  {
+    path: 'users',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/users/users.module').then( m => m.UsersPageModule)
+  },
+  {
+    path: 'listings',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/listings/listings.module').then( m => m.ListingsPageModule)
+  },
+  {
+    path: 'reports',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/reports/reports.module').then( m => m.ReportsPageModule)
+  },
 
 
 
@@ -56,6 +71,7 @@ const routes: Routes = [
     },
     loadChildren: () => import('./user/profile/profile.module').then( m => m.ProfilePageModule)
   },
+
 
 ];
 

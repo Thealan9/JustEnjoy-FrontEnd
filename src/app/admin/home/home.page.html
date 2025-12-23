@@ -1,9 +1,33 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Admin</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">Salir</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <ion-grid *ngIf="stats">
+    <ion-row>
+      <ion-col size="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Usuarios</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{ stats.users }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
 
+      <ion-col size="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Ingresos</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            ${{ stats.income_month }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+    <ion-item *ngFor="let item of activity">
+      {{ item.message }}
+    </ion-item>
+  </ion-list>
+</ion-content>

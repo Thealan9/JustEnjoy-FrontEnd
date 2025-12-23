@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from 'src/app/core/auth';
+import { AdminDashboard } from '../services/admin-dashboard';
+import { AdminDashboardResponse } from 'src/app/interfaces/admin/admin-dashboard.interface';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +11,13 @@ import { Auth } from 'src/app/core/auth';
   standalone:false,
 })
 export class HomePage  {
+  stats!: AdminDashboardResponse['stats'];
+  activity: AdminDashboardResponse['recent_activity'] = [];
 
   constructor(
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private dashboard: AdminDashboard
   ) {}
 
   logout() {
@@ -25,6 +30,13 @@ export class HomePage  {
         await this.auth.logout();
         this.router.navigateByUrl('/login', { replaceUrl: true });
       }
+    });
+  }
+  ionViewWillEnter() {
+    this.dashboard.getDashboard().subscribe(res => {
+      this.stats = res['stats'];
+      this.activity = res['recent_activity'];
+      console.log(res);
     });
   }
 
