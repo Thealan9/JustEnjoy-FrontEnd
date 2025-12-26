@@ -36,7 +36,7 @@ export class HomePage  {
     this.dashboard.getDashboard().subscribe(res => {
       this.stats = res['stats'];
       this.activity = res['recent_activity'];
-      console.log(res);
+
     });
   }
 

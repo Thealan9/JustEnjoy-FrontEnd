@@ -38,7 +38,7 @@ const routes: Routes = [
   loadChildren: () => import('./admin/home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'users',
+    path: 'admin/users',
     canMatch: [AuthGuard,RoleGuard],
     data: { roles: ['admin'] },
     loadChildren: () => import('./admin/users/users.module').then( m => m.UsersPageModule)
@@ -54,6 +54,12 @@ const routes: Routes = [
     canMatch: [AuthGuard,RoleGuard],
     data: { roles: ['admin'] },
     loadChildren: () => import('./admin/reports/reports.module').then( m => m.ReportsPageModule)
+  },
+  {
+    path: 'admin/users/edit/:id',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/users/edit/edit.module').then( m => m.EditPageModule)
   },
 
 

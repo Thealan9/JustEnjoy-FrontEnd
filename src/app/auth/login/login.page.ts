@@ -30,30 +30,21 @@ export class LoginPage {
   }
 
   login() {
-    if (this.form.invalid) return;
+  if (this.form.invalid) return;
 
-    const { email, password } = this.form.value;
+  const { email, password } = this.form.value;
+  if (!email || !password) return;
 
-    if (!email || !password) return;
-
-    this.auth.login({ email, password }).subscribe({
-      next: async (res) => {
-        const token = res.token || res.access_token;
-        if (!token) {
-          //console.error('Token no recibido', res);
-          return;
-        }
-
-        this.auth.setUser(res.user);
-        await this.auth.saveToken(token);
-        if (res.user.role === 'admin') {
-        this.router.navigateByUrl('admin', { replaceUrl: true });
-        } else {
-           this.router.navigateByUrl('home', { replaceUrl: true });
-        }
-      },
+  this.auth.login({ email, password }).subscribe({
+    next: res => {
+      if (res.user.role === 'admin') {
+        this.router.navigateByUrl('/admin', { replaceUrl: true });
+      } else {
+        this.router.navigateByUrl('/home', { replaceUrl: true });
+      }
+    },
       error: err => {
-        console.error('Error login', err);
+        console.error('Login error', err);
       }
     });
   }

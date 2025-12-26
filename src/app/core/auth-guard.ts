@@ -18,7 +18,7 @@ export class AuthGuard implements CanMatch  {
     return this.auth.getToken$().pipe(
       take(1),
       map(token => {
-        console.log(token);
+
         return token
           ? true
           : this.router.createUrlTree(['/login']);

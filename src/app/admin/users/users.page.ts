@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminUsers } from '../services/admin-users';
+import { User } from 'src/app/interfaces/admin/user.model';
+import { Auth } from 'src/app/core/auth';
 
 @Component({
   selector: 'app-users',
@@ -8,9 +11,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersPage implements OnInit {
 
-  constructor() { }
+  users: any[] = [];
+  loading = true;
+  authUser!: User;
 
-  ngOnInit() {
+  constructor(private adminUsers: AdminUsers,private auth: Auth) { }
+
+  async ngOnInit() {
+    const user = await this.auth.getUser();
+
+    if (user) {
+    this.authUser = user;
+  } else {
+    console.warn('No se encontró el usuario');
+  }
+
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.loading = true;
+    this.adminUsers.getUsers().subscribe({
+      next: res => {
+        this.users = res;
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Error loading users', err);
+        this.loading = false;
+      }
+    });
+  }
+  canEdit(user: User) {
+  return user.id !== this.authUser.id;
   }
 
 }
