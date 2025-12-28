@@ -8,11 +8,9 @@ import { User } from 'src/app/interfaces/admin/user.model';
   selector: 'app-edit',
   templateUrl: './edit.page.html',
   styleUrls: ['./edit.page.scss'],
-  standalone:false,
-
+  standalone: false,
 })
 export class EditPage implements OnInit {
-
   userId!: number;
 
   form = this.fb.group({
@@ -35,7 +33,7 @@ export class EditPage implements OnInit {
   }
 
   loadUser() {
-    this.adminUsers.getUser(this.userId).subscribe(user => {
+    this.adminUsers.getUser(this.userId).subscribe((user) => {
       this.form.patchValue(user);
     });
   }
@@ -47,8 +45,13 @@ export class EditPage implements OnInit {
 
     this.adminUsers.updateUser(this.userId, data).subscribe({
       next: () => this.router.navigateByUrl('/admin/users'),
-      error: err => console.error(err)
+      error: (err) => {
+        if (err.status === 403) {
+          alert(err.error.message);
+        } else {
+          console.error(err);
+        }
+      },
     });
   }
-
 }

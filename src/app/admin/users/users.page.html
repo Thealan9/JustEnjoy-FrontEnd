@@ -18,7 +18,7 @@
   <ion-button
     slot="end"
     size="small"
-    *ngIf="canEdit(user)"
+    [disabled]="!canEdit(user)"
     [routerLink]="['/admin/users/edit', user.id]">
     Editar
   </ion-button>
