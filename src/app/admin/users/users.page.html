@@ -22,6 +22,20 @@
     [routerLink]="['/admin/users/edit', user.id]">
     Editar
   </ion-button>
+  <ion-button
+    color="warning"
+    (click)="toggleActive(user)"
+    [disabled]="!canEdit(user)">
+    {{ user.active ? 'Bloquear' : 'Activar' }}
+  </ion-button>
+
+   <ion-button
+    color="danger"
+    (click)="delete(user)"
+    [disabled]="!canEdit(user)">
+    Eliminar
+  </ion-button>
+
 </ion-item>
   </ion-list>
 

@@ -27,6 +27,10 @@ export class UsersPage implements OnInit {
   }
 
     this.loadUsers();
+
+    this.adminUsers.refresh$.subscribe(() => {
+      this.loadUsers();
+    });
   }
 
   loadUsers() {
@@ -42,8 +46,17 @@ export class UsersPage implements OnInit {
       }
     });
   }
+
   canEdit(user: User) {
-  return user.id !== this.authUser.id;
+    return user.id !== this.authUser.id;
+  }
+
+  toggleActive(user: User) {
+  this.adminUsers.toggleActive(user.id).subscribe(() => this.loadUsers());
+  }
+
+  delete(user: User){
+    this.adminUsers.deleteUser(user.id).subscribe(() => this.loadUsers());
   }
 
 }
