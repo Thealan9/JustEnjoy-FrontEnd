@@ -37,6 +37,8 @@ const routes: Routes = [
   data: { roles: ['admin'] },
   loadChildren: () => import('./admin/home/home.module').then(m => m.HomePageModule)
   },
+
+  //users
   {
     path: 'admin/users',
     canMatch: [AuthGuard,RoleGuard],
@@ -44,22 +46,50 @@ const routes: Routes = [
     loadChildren: () => import('./admin/users/users.module').then( m => m.UsersPageModule)
   },
   {
-    path: 'listings',
-    canMatch: [AuthGuard,RoleGuard],
-    data: { roles: ['admin'] },
-    loadChildren: () => import('./admin/listings/listings.module').then( m => m.ListingsPageModule)
-  },
-  {
-    path: 'reports',
-    canMatch: [AuthGuard,RoleGuard],
-    data: { roles: ['admin'] },
-    loadChildren: () => import('./admin/reports/reports.module').then( m => m.ReportsPageModule)
-  },
-  {
     path: 'admin/users/edit/:id',
     canMatch: [AuthGuard,RoleGuard],
     data: { roles: ['admin'] },
     loadChildren: () => import('./admin/users/edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'admin/users/create',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/users/create/create.module').then( m => m.CreatePageModule)
+  },
+  // {
+  //   path: 'listings',
+  //   canMatch: [AuthGuard,RoleGuard],
+  //   data: { roles: ['admin'] },
+  //   loadChildren: () => import('./admin/listings/listings.module').then( m => m.ListingsPageModule)
+  // },
+  // {
+  //   path: 'reports',
+  //   canMatch: [AuthGuard,RoleGuard],
+  //   data: { roles: ['admin'] },
+  //   loadChildren: () => import('./admin/reports/reports.module').then( m => m.ReportsPageModule)
+  // },
+
+
+
+  //locales
+  {
+    path: 'admin/locales',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/locals/locals.module').then( m => m.LocalsPageModule)
+  },
+  {
+    path: 'admin/locales/edit/:id',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/locals/edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'admin/locales/create',
+    canMatch: [AuthGuard,RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./admin/locals/create/create.module').then( m => m.CreatePageModule)
   },
 
 

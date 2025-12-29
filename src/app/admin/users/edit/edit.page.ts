@@ -46,7 +46,7 @@ export class EditPage implements OnInit {
     this.adminUsers.updateUser(this.userId, data).subscribe({
       next: () => this.router.navigateByUrl('/admin/users'),
       error: (err) => {
-        if (err.status === 403) {
+        if (err.status === 422) {
           alert(err.error.message);
         } else {
           console.error(err);

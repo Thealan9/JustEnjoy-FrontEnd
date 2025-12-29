@@ -24,6 +24,12 @@ export class AdminUsers {
     return this.http.get<User>(`${this.API}/admin/users/${id}`);
   }
 
+  createUser(data: Partial<User>) {
+      return this.http.post<User>(`${this.API}/admin/users`, data).pipe(
+      tap( ()=> this.triggerRefresh())
+    );
+  }
+
   updateUser(id: number, data: Partial<User>) {
     return this.http.put<UpdateUserResponse>(`${this.API}/admin/users/${id}`,data).pipe(
       tap(()=> this.triggerRefresh())
